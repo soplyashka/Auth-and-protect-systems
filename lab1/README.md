@@ -9,15 +9,14 @@
 ## Исходные данные
 
 1.  ОС Windows 11
-2.  RStudio Desktop
+2.  Ноутбук Huawei
 3.  WSL2
-4.  Интерпретатор языка R 4.2.2
 
 ## План
 
 1.  Выполнить команду uname -r
-2.  Выполнить команду cat /proc/cpuinfo \| grep "model name"
-3.  Выполнить команду journalctl -q -b \| tail -n 30
+2.  Выполнить команду cat /proc/cpuinfo | grep "model name"
+3.  Выполнить команду dmesg | tail -n 30
 
 ## Шаги
 
@@ -30,7 +29,7 @@ uname -r
 	5.15.90.1-microsoft-standard-WSL2
 
 
-2\. Далее команда cat /proc/cpuinfo \| grep "model name" для вывода информации о процессоре, строки которой содержат "model name"
+2\. Далее команда cat /proc/cpuinfo | grep "model name" для вывода информации о процессоре, строки которой содержат "model name"
 
 ```{bash}
 cat /proc/cpuinfo | grep "model name"
@@ -45,7 +44,7 @@ cat /proc/cpuinfo | grep "model name"
 	model name      : AMD Ryzen 5 3500U with Radeon Vega Mobile Gfx
 	model name      : AMD Ryzen 5 3500U with Radeon Vega Mobile Gfx
 
-3\. Также выполним команду journalctl -q -b \| tail -n 30 для вывода последних 30 строк логов
+3\. Также выполним команду dmesg | tail -n 30 для вывода последних 30 строк логов
 
 ```{bash}
 dmesg | tail -n 30
