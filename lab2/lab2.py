@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 bad_hosts = []
-with open('host1.txt') as file:
+with open('hosts') as file:
     for line in file.readlines()[27:]:
         if line[0] == '#':
             continue
@@ -20,29 +19,4 @@ with open('dns.log') as file:
 
 bad_count = len([host for host in hosts if host in bad_hosts])
 percentile = round(bad_count/len(hosts),3)*100
-print("Число вхождений DNS в список нежелательного трафика: {}.".format(str(bad_count)),
-=======
-bad_hosts = []
-with open('host1.txt') as file:
-    for line in file.readlines()[27:]:
-        if line[0] == '#':
-            continue
-        bad_hosts.append(line.split()[1])
-
-#print(bad_hosts)
-
-hosts = []
-with open('dns.log') as file:
-    for line in file.readlines():
-        if line[0] == '#':
-            continue
-        try:
-            hosts.append(line.split()[9])
-        except IndexError:
-            continue
-
-bad_count = len([host for host in hosts if host in bad_hosts])
-percentile = round(bad_count/len(hosts),3)*100
-print("Число вхождений DNS в список нежелательного трафика: {}.".format(str(bad_count)),
->>>>>>> ee421d0113dd49a1558dd0e1b6876679712aa3b0
-"Процент нежелательного трафика: {}%.".format(str(percentile)),sep='\n')
+print("Число вхождений DNS в список нежелательного трафика: {}.".format(str(bad_count)))
