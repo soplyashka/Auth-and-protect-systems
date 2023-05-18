@@ -3,11 +3,21 @@ title: "Получение сведений о системе"
 author: Сафрыгина Анастасия
 format: 
     md:
-        output-file: readme.md
+        output-file: README.md
 engine: knitr
 ---
 
+## Цель работы
 
+Получить сведения об используемой системе
+
+## Исходные данные
+
+1. Ноутбук Huawei
+
+2. ОС Windows 11 Домашняя (Ubuntu 22.04.1 LTS (GNU/Linux 5.15.90.1-microsoft-standard-WSL2 x86_64))
+
+3. Интерпретатор командной оболочки bash
 
 ## План
 

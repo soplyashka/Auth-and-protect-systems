@@ -1,6 +1,19 @@
 # Получение сведений о системе
 Сафрыгина Анастасия
 
+## Цель работы
+
+Получить сведения об используемой системе
+
+## Исходные данные
+
+1.  Ноутбук Huawei
+
+2.  ОС Windows 11 Домашняя (Ubuntu 22.04.1 LTS (GNU/Linux
+    5.15.90.1-microsoft-standard-WSL2 x86_64))
+
+3.  Интерпретатор командной оболочки bash
+
 ## План
 
 1.  Ввод команд в эмулятор терминала
@@ -48,36 +61,36 @@ cat /proc/cpuinfo | grep "model name"
 dmesg | tail -n 30
 ```
 
-    [    4.698899] hv_pci 65e3ffe4-eb3a-4e86-9d26-47ba67208c7e: PCI VMBus probing: Using version 0x10004
-    [    4.708945] hv_pci 65e3ffe4-eb3a-4e86-9d26-47ba67208c7e: PCI host bridge to bus eb3a:00
-    [    4.711934] pci_bus eb3a:00: root bus resource [mem 0x9ffe08000-0x9ffe0afff window]
-    [    4.715585] pci_bus eb3a:00: No busn resource found for root bus, will use [bus 00-ff]
-    [    4.725382] pci eb3a:00:00.0: [1af4:1049] type 00 class 0x010000
-    [    4.734946] pci eb3a:00:00.0: reg 0x10: [mem 0x9ffe08000-0x9ffe08fff 64bit]
-    [    4.742206] pci eb3a:00:00.0: reg 0x18: [mem 0x9ffe09000-0x9ffe09fff 64bit]
-    [    4.749319] pci eb3a:00:00.0: reg 0x20: [mem 0x9ffe0a000-0x9ffe0afff 64bit]
-    [    4.778228] pci_bus eb3a:00: busn_res: [bus 00-ff] end is updated to 00
-    [    4.781415] pci eb3a:00:00.0: BAR 0: assigned [mem 0x9ffe08000-0x9ffe08fff 64bit]
-    [    4.789823] pci eb3a:00:00.0: BAR 2: assigned [mem 0x9ffe09000-0x9ffe09fff 64bit]
-    [    4.796789] pci eb3a:00:00.0: BAR 4: assigned [mem 0x9ffe0a000-0x9ffe0afff 64bit]
-    [    5.130310] hv_pci dc9a302e-bfbb-4139-adb0-5f9a0ae81cba: PCI VMBus probing: Using version 0x10004
-    [    5.142099] hv_pci dc9a302e-bfbb-4139-adb0-5f9a0ae81cba: PCI host bridge to bus bfbb:00
-    [    5.145313] pci_bus bfbb:00: root bus resource [mem 0x9ffe0c000-0x9ffe0efff window]
-    [    5.149184] pci_bus bfbb:00: No busn resource found for root bus, will use [bus 00-ff]
-    [    5.161859] pci bfbb:00:00.0: [1af4:1049] type 00 class 0x010000
-    [    5.171083] pci bfbb:00:00.0: reg 0x10: [mem 0x9ffe0c000-0x9ffe0cfff 64bit]
-    [    5.177733] pci bfbb:00:00.0: reg 0x18: [mem 0x9ffe0d000-0x9ffe0dfff 64bit]
-    [    5.186757] pci bfbb:00:00.0: reg 0x20: [mem 0x9ffe0e000-0x9ffe0efff 64bit]
-    [    5.214534] pci_bus bfbb:00: busn_res: [bus 00-ff] end is updated to 00
-    [    5.217386] pci bfbb:00:00.0: BAR 0: assigned [mem 0x9ffe0c000-0x9ffe0cfff 64bit]
-    [    5.223493] pci bfbb:00:00.0: BAR 2: assigned [mem 0x9ffe0d000-0x9ffe0dfff 64bit]
-    [    5.229658] pci bfbb:00:00.0: BAR 4: assigned [mem 0x9ffe0e000-0x9ffe0efff 64bit]
-    [    6.006522] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
-    [    6.009643] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
-    [    6.013245] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
-    [    6.017953] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -22
-    [    6.021659] misc dxg: dxgk: dxgkio_query_adapter_info: Ioctl failed: -2
-    [   50.630909] hv_balloon: Max. dynamic memory size: 3550 MB
+    [27595.952560] RBP: 000000000000000b R08: 00007fd23063813b R09: 00007ffffbfe7ab0
+    [27595.955873] R10: 0000000000000008 R11: 0000000000000206 R12: 00005589dc25f190
+    [27595.959669] R13: 00005589daa23250 R14: 00005589dc25e4a0 R15: 0000000000000003
+    [27595.963112] FS:  00007fd230354840 GS:  0000000000000000
+    [27603.504077] docker-compose[6312]: segfault at 8 ip 00007fe58c7e7235 sp 00007ffd48229710 error 4 in ld-linux-x86-64.so.2[7fe58c7c6000+2a000]
+    [27603.509189] Code: 81 39 52 e5 74 64 0f 84 f9 04 00 00 48 85 c0 75 e4 48 83 3d 0c 7d 01 00 00 0f 85 0a 05 00 00 49 8b 57 68 49 8b 87 68 02 00 00 <48> 8b 5a 08 41 f6 87 1e 03 00 00 20 74 03 49 03 1f 48 85 c0 74 3a
+    [27603.517519] potentially unexpected fatal signal 11.
+    [27603.519772] CPU: 0 PID: 6312 Comm: docker-compose Not tainted 5.15.90.1-microsoft-standard-WSL2 #1
+    [27603.523642] RIP: 0033:0x7fe58c7e7235
+    [27603.525342] Code: 81 39 52 e5 74 64 0f 84 f9 04 00 00 48 85 c0 75 e4 48 83 3d 0c 7d 01 00 00 0f 85 0a 05 00 00 49 8b 57 68 49 8b 87 68 02 00 00 <48> 8b 5a 08 41 f6 87 1e 03 00 00 20 74 03 49 03 1f 48 85 c0 74 3a
+    [27603.534992] RSP: 002b:00007ffd48229710 EFLAGS: 00010246
+    [27603.537130] RAX: 0000000000000000 RBX: 00007ffd482297b0 RCX: 00007fe58c7c4270
+    [27603.540346] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007fe58c7c4000
+    [27603.544626] RBP: 00007ffd482299d0 R08: 00007fe58c7ff118 R09: 0000000000000000
+    [27603.548236] R10: 0000000000000022 R11: 0000000000000246 R12: 00007ffd48229788
+    [27603.551409] R13: 0000000000000000 R14: 0000000000000000 R15: 00007fe58c7ff2e0
+    [27603.554661] FS:  0000000000000000 GS:  0000000000000000
+    [27659.542102] docker-compose[6341]: segfault at 8 ip 00007f20cdff1235 sp 00007ffd87274b20 error 4 in ld-linux-x86-64.so.2[7f20cdfd0000+2a000]
+    [27659.547779] Code: 81 39 52 e5 74 64 0f 84 f9 04 00 00 48 85 c0 75 e4 48 83 3d 0c 7d 01 00 00 0f 85 0a 05 00 00 49 8b 57 68 49 8b 87 68 02 00 00 <48> 8b 5a 08 41 f6 87 1e 03 00 00 20 74 03 49 03 1f 48 85 c0 74 3a
+    [27659.555943] potentially unexpected fatal signal 11.
+    [27659.558260] CPU: 5 PID: 6341 Comm: docker-compose Not tainted 5.15.90.1-microsoft-standard-WSL2 #1
+    [27659.562943] RIP: 0033:0x7f20cdff1235
+    [27659.564408] Code: 81 39 52 e5 74 64 0f 84 f9 04 00 00 48 85 c0 75 e4 48 83 3d 0c 7d 01 00 00 0f 85 0a 05 00 00 49 8b 57 68 49 8b 87 68 02 00 00 <48> 8b 5a 08 41 f6 87 1e 03 00 00 20 74 03 49 03 1f 48 85 c0 74 3a
+    [27659.571811] RSP: 002b:00007ffd87274b20 EFLAGS: 00010246
+    [27659.573879] RAX: 0000000000000000 RBX: 00007ffd87274bc0 RCX: 00007f20cdfce270
+    [27659.577728] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007f20cdfce000
+    [27659.581047] RBP: 00007ffd87274de0 R08: 00007f20ce009118 R09: 0000000000000000
+    [27659.584640] R10: 0000000000000022 R11: 0000000000000246 R12: 00007ffd87274b98
+    [27659.588030] R13: 0000000000000000 R14: 0000000000000000 R15: 00007f20ce0092e0
+    [27659.591227] FS:  0000000000000000 GS:  0000000000000000
 
 ## Оценка результата
 
