@@ -32,7 +32,7 @@ sudo sysctl -w vm.max_map_count=262144
 Формируем файлы с конфигурациями, следуя инструкции по ссылке:
 https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 
-#### 2.1.Создание сервиса setup:
+2.1.Создание сервиса setup:
 ```
   setup:
     image: elastic/elasticsearch:${STACK_VERSION}
@@ -96,7 +96,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
       retries: 120
 ```
 
-#### 2.2.Создание сервиса главной ноды es01:
+2.2.Создание сервиса главной ноды es01:
 
 ```
   es01:
@@ -144,7 +144,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 
 ```
 
-#### 2.3.Создание сервиса графической панели управления kibana:
+2.3.Создание сервиса графической панели управления kibana:
 
 ```
   kibana:
@@ -176,7 +176,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 
 ```
 
-#### 2.4.Пропишем используемые Docker volume:
+2.4.Пропишем используемые Docker volume:
 
 ```
 volumes:
@@ -188,44 +188,70 @@ volumes:
     driver: local
 ```
 
-### 3\. Добавление средства сбора информации из файлов журналов Filebeat
+3. Добавление средства сбора сетевого трафика Packetbeat
 
-#### 1. Создание сервиса для запуска Filebeat:
+3.1. Создание сервиса для запуска Packetbeat:
 
-```
-  filebeat:
+      packetbeat:
     depends_on:
-       es01:
+      es01:
         condition: service_healthy
-    image: elastic/filebeat:${STACK_VERSION}
-    container_name: filebeat
-    command: filebeat -e -strict.perms=false
+    image: elastic/packetbeat:${STACK_VERSION}
+    container_name: packetbeat
+    user: root
+    cap_add: 
+      - NET_RAW
+      - NET_ADMIN
+    command: packetbeat -e -strict.perms=false
     volumes:
-      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - ./logs/:/var/log/
+      - /mnt/c/proba/docker-compo1/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml
       - certs:/usr/share/elasticsearch/config/certs
+      - /run/docker.sock:/run/docker.sock
     environment:
       - ELASTICSEARCH_HOSTS=https://es01:9200
       - ELASTICSEARCH_USERNAME=elastic
       - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
-```
 
-Где:
+3.2. Файл конфигурации packetbeat.yml:
 
-filebeat.yml -- файл конфигурации Filebeat;
+    packetbeat.interfaces.device: any
 
-logs -- каталог с лог-файлами.
+packetbeat.flows:
+  timeout: 30s
+  period: 10s
 
-#### 3.Файл конфигурации filebeat.yml:
+packetbeat.protocols.dns:
+  ports: [53]
+  include_authorities: true
+  include_additionals: true
 
-```
-filebeat.inputs:
-- type: filestream
-  id: sys-logs
-  enabled: true
-  paths:
-    - /var/log/*
+packetbeat.protocols.http:
+  ports: [80, 5601, 9200, 8080, 8081, 5000, 8002]
+
+packetbeat.protocols.memcache:
+  ports: [11211]
+
+packetbeat.protocols.mysql:
+  ports: [3306]
+
+packetbeat.protocols.pgsql:
+  ports: [5432]
+
+packetbeat.protocols.redis:
+  ports: [6379]
+
+packetbeat.protocols.thrift:
+  ports: [9090]
+
+packetbeat.protocols.mongodb:
+  ports: [27017]
+
+packetbeat.protocols.cassandra:
+  ports: [9042]
+
+processors:
+- add_cloud_metadata: ~
 
 output.elasticsearch:
   hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'

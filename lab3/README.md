@@ -3,19 +3,19 @@
 
 ## Цель работы
 
-1\. Освоить базовые подходы централизованного сбора и накопления
+1. Освоить базовые подходы централизованного сбора и накопления
 информации
 
-2\. Освоить современные инструменты развертывания контейнирозованных
+2. Освоить современные инструменты развертывания контейнирозованных
 приложений
 
-3\. Закрепить знания о современных сетевых протоколах прикладного уровня
+3. Закрепить знания о современных сетевых протоколах прикладного уровня
 
 ## Ход выполнения практической работы
 
 ### Задание 1. Развернуть систему мониторинга на базе ElasticSearch
 
-1\. Настройка
+1. Настройка
 
     Для работы ElasticSearch требуется увеличить размер виртуальной памяти системы:
 
@@ -23,7 +23,7 @@
 sudo sysctl -w vm.max_map_count=262144
 ```
 
-2\. Создание docker-compose.yml
+2. Создание docker-compose.yml
 
 Формируем файлы с конфигурациями, следуя инструкции по ссылке:
 https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
@@ -175,7 +175,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
       kibanadata:
         driver: local
 
-1.  Добавление средства сбора сетевого трафика Packetbeat
+3. Добавление средства сбора сетевого трафика Packetbeat
 
 3.1. Создание сервиса для запуска Packetbeat:
 
@@ -204,45 +204,59 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 
     packetbeat.interfaces.device: any
 
-packetbeat.flows: timeout: 30s period: 10s
+packetbeat.flows:
+  timeout: 30s
+  period: 10s
 
-packetbeat.protocols.dns: ports: \[53\] include_authorities: true
-include_additionals: true
+packetbeat.protocols.dns:
+  ports: [53]
+  include_authorities: true
+  include_additionals: true
 
-packetbeat.protocols.http: ports: \[80, 5601, 9200, 8080, 8081, 5000,
-8002\]
+packetbeat.protocols.http:
+  ports: [80, 5601, 9200, 8080, 8081, 5000, 8002]
 
-packetbeat.protocols.memcache: ports: \[11211\]
+packetbeat.protocols.memcache:
+  ports: [11211]
 
-packetbeat.protocols.mysql: ports: \[3306\]
+packetbeat.protocols.mysql:
+  ports: [3306]
 
-packetbeat.protocols.pgsql: ports: \[5432\]
+packetbeat.protocols.pgsql:
+  ports: [5432]
 
-packetbeat.protocols.redis: ports: \[6379\]
+packetbeat.protocols.redis:
+  ports: [6379]
 
-packetbeat.protocols.thrift: ports: \[9090\]
+packetbeat.protocols.thrift:
+  ports: [9090]
 
-packetbeat.protocols.mongodb: ports: \[27017\]
+packetbeat.protocols.mongodb:
+  ports: [27017]
 
-packetbeat.protocols.cassandra: ports: \[9042\]
+packetbeat.protocols.cassandra:
+  ports: [9042]
 
-processors: - add_cloud_metadata: ~
+processors:
+- add_cloud_metadata: ~
 
-output.elasticsearch: hosts:
-‘*E**L**A**S**T**I**C**S**E**A**R**C**H*<sub>*H*</sub>*O**S**T**S* : *e**l**a**s**t**i**c**s**e**a**r**c**h* : 9200′*u**s**e**r**n**a**m**e* : ′{ELASTICSEARCH_USERNAME:}’
-password: ‘${ELASTICSEARCH_PASSWORD:}’ ssl: certificate_authorities:
-“/usr/share/elasticsearch/config/certs/ca/ca.crt” \`\`\`
+output.elasticsearch:
+  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
+  username: '${ELASTICSEARCH_USERNAME:}'
+  password: '${ELASTICSEARCH_PASSWORD:}'
+  ssl:
+    certificate_authorities: "/usr/share/elasticsearch/config/certs/ca/ca.crt"
 
-3\. Переходим на `localhost:5061` и авторизируемся
+4.  Переходим на `localhost:5061` и авторизируемся
 
 ![All text](1.png)
 
-4\. Проверям, что установленны все средства для сбора информации из
-файлов журналов и сбора аналитики трафика
+5.  Проверям, что установленны все средства для сбора информации из
+    файлов журналов и сбора аналитики трафика
 
 ![All text](2.png)
 
-5\. Создаем новый data view для packetbeat
+6.  Создаем новый data view для packetbeat
 
 ![Att text](packetbeat.png)
 
