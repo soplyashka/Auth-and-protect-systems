@@ -3,19 +3,19 @@
 
 ## Цель работы
 
-1. Освоить базовые подходы централизованного сбора и накопления
+1\. Освоить базовые подходы централизованного сбора и накопления
 информации
 
-2. Освоить современные инструменты развертывания контейнирозованных
+2\. Освоить современные инструменты развертывания контейнирозованных
 приложений
 
-3. Закрепить знания о современных сетевых протоколах прикладного уровня
+3\. Закрепить знания о современных сетевых протоколах прикладного уровня
 
 ## Ход выполнения практической работы
 
 ### Задание 1. Развернуть систему мониторинга на базе ElasticSearch
 
-1. Настройка
+1\. Настройка
 
     Для работы ElasticSearch требуется увеличить размер виртуальной памяти системы:
 
@@ -23,7 +23,7 @@
 sudo sysctl -w vm.max_map_count=262144
 ```
 
-2. Создание docker-compose.yml
+2\. Создание docker-compose.yml
 
 Формируем файлы с конфигурациями, следуя инструкции по ссылке:
 https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
@@ -175,59 +175,74 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
       kibanadata:
         driver: local
 
-3. Добавление средства сбора информации из файлов журналов Filebeat
+1.  Добавление средства сбора сетевого трафика Packetbeat
 
-3.1. Создание сервиса для запуска Filebeat:
+3.1. Создание сервиса для запуска Packetbeat:
 
-      filebeat:
-        depends_on:
-           es01:
-            condition: service_healthy
-        image: elastic/filebeat:${STACK_VERSION}
-        container_name: filebeat
-        command: filebeat -e -strict.perms=false
-        volumes:
-          - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
-          - ./logs/:/var/log/
-          - certs:/usr/share/elasticsearch/config/certs
-        environment:
-          - ELASTICSEARCH_HOSTS=https://es01:9200
-          - ELASTICSEARCH_USERNAME=elastic
-          - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
-          - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      packetbeat:
+    depends_on:
+      es01:
+        condition: service_healthy
+    image: elastic/packetbeat:${STACK_VERSION}
+    container_name: packetbeat
+    user: root
+    cap_add: 
+      - NET_RAW
+      - NET_ADMIN
+    command: packetbeat -e -strict.perms=false
+    volumes:
+      - /mnt/c/proba/docker-compo1/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml
+      - certs:/usr/share/elasticsearch/config/certs
+      - /run/docker.sock:/run/docker.sock
+    environment:
+      - ELASTICSEARCH_HOSTS=https://es01:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
 
-Где:
+3.2. Файл конфигурации packetbeat.yml:
 
-filebeat.yml – файл конфигурации Filebeat;
+    packetbeat.interfaces.device: any
 
-logs – каталог с лог-файлами.
+packetbeat.flows: timeout: 30s period: 10s
 
-#### 3.Файл конфигурации filebeat.yml:
+packetbeat.protocols.dns: ports: \[53\] include_authorities: true
+include_additionals: true
 
-    filebeat.inputs:
-    - type: filestream
-      id: sys-logs
-      enabled: true
-      paths:
-        - /var/log/*
+packetbeat.protocols.http: ports: \[80, 5601, 9200, 8080, 8081, 5000,
+8002\]
 
-    output.elasticsearch:
-      hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
-      username: '${ELASTICSEARCH_USERNAME:}'
-      password: '${ELASTICSEARCH_PASSWORD:}'
-      ssl:
-        certificate_authorities: "/usr/share/elasticsearch/config/certs/ca/ca.crt"
+packetbeat.protocols.memcache: ports: \[11211\]
 
-3.  Переходим на `localhost:5061` и авторизируемся
+packetbeat.protocols.mysql: ports: \[3306\]
+
+packetbeat.protocols.pgsql: ports: \[5432\]
+
+packetbeat.protocols.redis: ports: \[6379\]
+
+packetbeat.protocols.thrift: ports: \[9090\]
+
+packetbeat.protocols.mongodb: ports: \[27017\]
+
+packetbeat.protocols.cassandra: ports: \[9042\]
+
+processors: - add_cloud_metadata: ~
+
+output.elasticsearch: hosts:
+‘*E**L**A**S**T**I**C**S**E**A**R**C**H*<sub>*H*</sub>*O**S**T**S* : *e**l**a**s**t**i**c**s**e**a**r**c**h* : 9200′*u**s**e**r**n**a**m**e* : ′{ELASTICSEARCH_USERNAME:}’
+password: ‘${ELASTICSEARCH_PASSWORD:}’ ssl: certificate_authorities:
+“/usr/share/elasticsearch/config/certs/ca/ca.crt” \`\`\`
+
+3\. Переходим на `localhost:5061` и авторизируемся
 
 ![All text](1.png)
 
-4.  Проверям, что установленны все средства для сбора информации из
-    файлов журналов и сбора аналитики трафика
+4\. Проверям, что установленны все средства для сбора информации из
+файлов журналов и сбора аналитики трафика
 
 ![All text](2.png)
 
-5.  Создаем новый data view для packetbeat
+5\. Создаем новый data view для packetbeat
 
 ![Att text](packetbeat.png)
 
