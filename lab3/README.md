@@ -227,13 +227,9 @@ logs – каталог с лог-файлами.
 
 ![All text](2.png)
 
-5.  Создаем новый data view для filebeat
+5.  Создаем новый data view для packetbeat
 
 ![Att text](3.png)
-
-6.  Создаем новый data view для packetbeat
-
-![All text](4.png)
 
 ## Оценка результата
 
