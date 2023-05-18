@@ -229,7 +229,7 @@ logs – каталог с лог-файлами.
 
 5.  Создаем новый data view для packetbeat
 
-![Att text](3.png)
+![Att text](packetbeat.png)
 
 ## Оценка результата
 
